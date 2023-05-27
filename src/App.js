@@ -4,6 +4,8 @@ import Home from "./pages/Home/Home";
 import CourierQuestionaire from "./pages/Questionaire/courierQuestion";
 import UserQuestionaire from "./pages/Questionaire/userQuestionaire";
 import Thankyou from "./pages/Thankyou/Thankyou";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
           <Route path="/thankyou" element={<Thankyou />} />
         </Routes>
       </Router>
+      <ToastContainer />
     </>
   );
 }

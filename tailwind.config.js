@@ -7,6 +7,9 @@ module.exports = {
       "business-woman": "url('./assets/business-woman.png')",
       "business-man": "url('./assets/business-man.png')",
     },
+    fontFamily: {
+      sans: ['Arial', 'Helvetica', 'sans-serif'],
+    },
     colors: {
       white: "#ffffff",
       black: "#383838",

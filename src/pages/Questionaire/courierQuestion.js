@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Header from "../../components/Header";
 
 const CourierQuestionaire = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [enteredEmail, setEnteredEmail] = useState("");
   const [comment, setComment] = useState("");
   const [gender, setGender] = useState("");
@@ -73,6 +75,7 @@ const CourierQuestionaire = () => {
   };
 
   const submitHandler = async (event) => {
+    setLoading(true);
     event.preventDefault();
     console.log(enteredEmail);
     try {
@@ -99,8 +102,13 @@ const CourierQuestionaire = () => {
         }
       );
       if (!response.ok) {
+        setLoading(false);
+        toast.error("Something went wwrong!");
         throw new Error("couldn't fetch data");
       }
+      console.log({ response });
+      setLoading(false);
+      toast.success("Your answers have been successfully recorded 😄!");
       navigate("/Thankyou");
     } catch (error) {}
   };
@@ -120,6 +128,7 @@ const CourierQuestionaire = () => {
             label="Email Address"
             placeholder="enter your gmail"
             value={enteredEmail}
+            required
             onChange={emailChangeHandler}
             className="color-white w-full rounded-lg bg-black px-4 py-2 text-center text-white outline-none lg:w-2/4"
           />
@@ -130,7 +139,7 @@ const CourierQuestionaire = () => {
           <li className="mb-6 text-green">
             <p className="mb-2 text-green">What’s your gender?</p>{" "}
             <div className="flex gap-4">
-              <div
+              <label
                 className={`space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
                   gender === "male" && checked
                 }`}
@@ -145,9 +154,9 @@ const CourierQuestionaire = () => {
                   onChange={genderChangeHandler}
                   checked={gender === "male"}
                 />
-                <label className="pr-4 font-medium text-black">Male</label>{" "}
-              </div>
-              <div
+                <span className="pr-4 font-medium text-black">Male</span>{" "}
+              </label>
+              <label
                 className={`space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
                   gender === "female" && checked
                 }`}
@@ -162,8 +171,8 @@ const CourierQuestionaire = () => {
                   onChange={genderChangeHandler}
                   checked={gender === "female"}
                 />
-                <label className="pr-4 font-medium text-black">Female</label>
-              </div>
+                <span className="pr-4 font-medium text-black">Female</span>
+              </label>
             </div>
           </li>
 
@@ -171,7 +180,7 @@ const CourierQuestionaire = () => {
           <li className=" mb-6 text-green">
             <p className="mb-2 text-green">Age Range?</p>{" "}
             <div className="flex flex-wrap gap-4">
-              <div
+              <label
                 className={`space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
                   age === "19-24" && checked
                 }`}
@@ -186,9 +195,9 @@ const CourierQuestionaire = () => {
                   onChange={ageChangeHandler}
                   checked={age === "19-24"}
                 />
-                <label className="pr-4 font-medium text-black">19 -24</label>{" "}
-              </div>
-              <div
+                <span className="pr-4 font-medium text-black">19 -24</span>{" "}
+              </label>
+              <label
                 className={`space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
                   age === "25-44" && checked
                 }`}
@@ -203,10 +212,10 @@ const CourierQuestionaire = () => {
                   onChange={ageChangeHandler}
                   checked={age === "25-44"}
                 />
-                <label className="pr-4 font-medium text-black">25-44</label>
-              </div>
-              <div
-                className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                <span className="pr-4 font-medium text-black">25-44</span>
+              </label>
+              <label
+                className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                   age === "45 Above" && checked
                 }`}
               >
@@ -220,8 +229,8 @@ const CourierQuestionaire = () => {
                   onChange={ageChangeHandler}
                   checked={age === "45 Above"}
                 />
-                <label className="pr-4 font-medium text-black">45 above</label>
-              </div>
+                <span className="pr-4 font-medium text-black">45 above</span>
+              </label>
             </div>
           </li>
 
@@ -229,7 +238,7 @@ const CourierQuestionaire = () => {
           <li className=" mb-6 text-green">
             <p className="mb-2 text-green">Age Range?</p>{" "}
             <div className="flex flex-wrap gap-4">
-              <div
+              <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
                   income === "below 1 million" && checked
                 }`}
@@ -244,11 +253,11 @@ const CourierQuestionaire = () => {
                   onChange={incomeChangeHandler}
                   checked={income === "below 1 million"}
                 />
-                <label className="pr-4 font-medium text-black">
+                <span className="pr-4 font-medium text-black">
                   below 1 million
-                </label>{" "}
-              </div>
-              <div
+                </span>{" "}
+              </label>
+              <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
                   income === "Above 1.5 Million" && checked
                 }`}
@@ -263,11 +272,11 @@ const CourierQuestionaire = () => {
                   onChange={incomeChangeHandler}
                   checked={income === "Above 1.5 Million"}
                 />
-                <label className="pr-4 font-medium text-black">
+                <span className="pr-4 font-medium text-black">
                   above 1.5 million
-                </label>
-              </div>
-              <div
+                </span>
+              </label>
+              <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
                   income === "Above 2.5 Million" && checked
                 }`}
@@ -282,10 +291,10 @@ const CourierQuestionaire = () => {
                   onChange={incomeChangeHandler}
                   checked={income === "Above 2.5 Million"}
                 />
-                <label className="pr-4 font-medium text-black">
+                <span className="pr-4 font-medium text-black">
                   above 2.5 million
-                </label>
-              </div>
+                </span>
+              </label>
             </div>
           </li>
 
@@ -295,7 +304,7 @@ const CourierQuestionaire = () => {
               How often do you travel interstate on a scale of 1-5?
             </p>{" "}
             <div className="flex gap-4">
-              <div
+              <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
                   scale === "one" && checked
                 }`}
@@ -309,9 +318,9 @@ const CourierQuestionaire = () => {
                   onChange={scaleChangeHandler}
                   checked={scale === "one"}
                 />
-                <label className="pr-4 font-medium text-black">1</label>{" "}
-              </div>
-              <div
+                <span className="pr-4 font-medium text-black">1</span>{" "}
+              </label>
+              <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
                   scale === "two" && checked
                 }`}
@@ -325,9 +334,9 @@ const CourierQuestionaire = () => {
                   onChange={scaleChangeHandler}
                   checked={scale === "two"}
                 />
-                <label className="pr-4 font-medium text-black">2</label>
-              </div>
-              <div
+                <span className="pr-4 font-medium text-black">2</span>
+              </label>
+              <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
                   scale === "three" && checked
                 }`}
@@ -341,10 +350,10 @@ const CourierQuestionaire = () => {
                   onChange={scaleChangeHandler}
                   checked={scale === "three"}
                 />
-                <label className="pr-4 font-medium text-black">3</label>
-              </div>
+                <span className="pr-4 font-medium text-black">3</span>
+              </label>
 
-              <div
+              <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
                   scale === "four" && checked
                 }`}
@@ -359,10 +368,10 @@ const CourierQuestionaire = () => {
                   onChange={scaleChangeHandler}
                   checked={scale === "four"}
                 />
-                <label className="pr-4 font-medium text-black">4</label>
-              </div>
+                <span className="pr-4 font-medium text-black">4</span>
+              </label>
 
-              <div
+              <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
                   scale === "five" && checked
                 }`}
@@ -377,8 +386,8 @@ const CourierQuestionaire = () => {
                   onChange={scaleChangeHandler}
                   checked={scale === "five"}
                 />
-                <label className="pr-4 font-medium text-black">5</label>
-              </div>
+                <span className="pr-4 font-medium text-black">5</span>
+              </label>
             </div>
           </li>
 
@@ -395,8 +404,8 @@ const CourierQuestionaire = () => {
                   acceptance
                 </p>
                 <div className="flex gap-4">
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       received === "yes" && checked
                     }`}
                   >
@@ -409,10 +418,10 @@ const CourierQuestionaire = () => {
                       onChange={receiveChangeHandler}
                       checked={received === "yes"}
                     />
-                    <label className="pr-4 font-medium text-black">Yes</label>{" "}
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       received === "no" && checked
                     }`}
                   >
@@ -425,10 +434,10 @@ const CourierQuestionaire = () => {
                       onChange={receiveChangeHandler}
                       checked={received === "no"}
                     />
-                    <label className="pr-4 font-medium text-black">No</label>
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">No</span>
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       received === "maybe" && checked
                     }`}
                   >
@@ -441,8 +450,8 @@ const CourierQuestionaire = () => {
                       onChange={receiveChangeHandler}
                       checked={received === "maybe"}
                     />
-                    <label className="pr-4 font-medium text-black">Maybe</label>
-                  </div>
+                    <span className="pr-4 font-medium text-black">Maybe</span>
+                  </label>
                 </div>
               </li>
 
@@ -451,8 +460,8 @@ const CourierQuestionaire = () => {
                   All packages(courier) are sealed by the courier service.
                 </p>
                 <div className="flex gap-4">
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       sealed === "yes" && checked
                     }`}
                   >
@@ -465,10 +474,10 @@ const CourierQuestionaire = () => {
                       onChange={sealedChangeHandler}
                       checked={sealed === "yes"}
                     />
-                    <label className="pr-4 font-medium text-black">Yes</label>{" "}
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       sealed === "no" && checked
                     }`}
                   >
@@ -481,10 +490,10 @@ const CourierQuestionaire = () => {
                       onChange={sealedChangeHandler}
                       checked={sealed === "no"}
                     />
-                    <label className="pr-4 font-medium text-black">No</label>
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">No</span>
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       sealed === "maybe" && checked
                     }`}
                   >
@@ -497,8 +506,8 @@ const CourierQuestionaire = () => {
                       onChange={sealedChangeHandler}
                       checked={sealed === "maybe"}
                     />
-                    <label className="pr-4 font-medium text-black">Maybe</label>
-                  </div>
+                    <span className="pr-4 font-medium text-black">Maybe</span>
+                  </label>
                 </div>
               </li>
 
@@ -508,8 +517,8 @@ const CourierQuestionaire = () => {
                   not tamper with the package.
                 </p>
                 <div className="flex gap-4">
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       liability === "yes" && checked
                     }`}
                   >
@@ -522,10 +531,10 @@ const CourierQuestionaire = () => {
                       onChange={liabilityChangeHandler}
                       checked={liability === "yes"}
                     />
-                    <label className="pr-4 font-medium text-black">Yes</label>{" "}
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       liability === "no" && checked
                     }`}
                   >
@@ -538,10 +547,10 @@ const CourierQuestionaire = () => {
                       onChange={liabilityChangeHandler}
                       checked={liability === "no"}
                     />
-                    <label className="pr-4 font-medium text-black">No</label>
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">No</span>
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       liability === "maybe" && checked
                     }`}
                   >
@@ -554,8 +563,8 @@ const CourierQuestionaire = () => {
                       onChange={liabilityChangeHandler}
                       checked={liability === "maybe"}
                     />
-                    <label className="pr-4 font-medium text-black">Maybe</label>
-                  </div>
+                    <span className="pr-4 font-medium text-black">Maybe</span>
+                  </label>
                 </div>
               </li>
 
@@ -565,8 +574,8 @@ const CourierQuestionaire = () => {
                   station, train station).
                 </p>
                 <div className="flex gap-4">
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       travelPoint === "yes" && checked
                     }`}
                   >
@@ -579,10 +588,10 @@ const CourierQuestionaire = () => {
                       onChange={travelPointChangeHandler}
                       checked={travelPoint === "yes"}
                     />
-                    <label className="pr-4 font-medium text-black">Yes</label>{" "}
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       travelPoint === "no" && checked
                     }`}
                   >
@@ -595,10 +604,10 @@ const CourierQuestionaire = () => {
                       onChange={travelPointChangeHandler}
                       checked={travelPoint === "no"}
                     />
-                    <label className="pr-4 font-medium text-black">No</label>
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">No</span>
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       travelPoint === "maybe" && checked
                     }`}
                   >
@@ -611,8 +620,8 @@ const CourierQuestionaire = () => {
                       onChange={travelPointChangeHandler}
                       checked={travelPoint === "maybe"}
                     />
-                    <label className="pr-4 font-medium text-black">Maybe</label>
-                  </div>
+                    <span className="pr-4 font-medium text-black">Maybe</span>
+                  </label>
                 </div>
               </li>
 
@@ -623,8 +632,8 @@ const CourierQuestionaire = () => {
                   (airport, bus station, train station).
                 </p>
                 <div className="flex gap-4">
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       price === "yes" && checked
                     }`}
                   >
@@ -637,10 +646,10 @@ const CourierQuestionaire = () => {
                       onChange={priceChangeHandler}
                       checked={price === "yes"}
                     />
-                    <label className="pr-4 font-medium text-black">Yes</label>{" "}
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       price === "no" && checked
                     }`}
                   >
@@ -653,10 +662,10 @@ const CourierQuestionaire = () => {
                       onChange={priceChangeHandler}
                       checked={price === "no"}
                     />
-                    <label className="pr-4 font-medium text-black">No</label>
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">No</span>
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       price === "maybe" && checked
                     }`}
                   >
@@ -669,8 +678,8 @@ const CourierQuestionaire = () => {
                       onChange={priceChangeHandler}
                       checked={price === "maybe"}
                     />
-                    <label className="pr-4 font-medium text-black">Maybe</label>
-                  </div>
+                    <span className="pr-4 font-medium text-black">Maybe</span>
+                  </label>
                 </div>
               </li>
 
@@ -681,8 +690,8 @@ const CourierQuestionaire = () => {
                   for the packages you will carry.
                 </p>
                 <div className="flex gap-4">
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       damage === "yes" && checked
                     }`}
                   >
@@ -695,10 +704,10 @@ const CourierQuestionaire = () => {
                       onChange={damageChangeHandler}
                       checked={damage === "yes"}
                     />
-                    <label className="pr-4 font-medium text-black">Yes</label>{" "}
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       damage === "no" && checked
                     }`}
                   >
@@ -711,10 +720,10 @@ const CourierQuestionaire = () => {
                       onChange={damageChangeHandler}
                       checked={damage === "no"}
                     />
-                    <label className="pr-4 font-medium text-black">No</label>
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">No</span>
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       damage === "maybe" && checked
                     }`}
                   >
@@ -727,8 +736,8 @@ const CourierQuestionaire = () => {
                       onChange={damageChangeHandler}
                       checked={damage === "maybe"}
                     />
-                    <label className="pr-4 font-medium text-black">Maybe</label>
-                  </div>
+                    <span className="pr-4 font-medium text-black">Maybe</span>
+                  </label>
                 </div>
               </li>
 
@@ -738,8 +747,8 @@ const CourierQuestionaire = () => {
                   your control.
                 </p>
                 <div className="flex gap-4">
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       screening === "yes" && checked
                     }`}
                   >
@@ -752,10 +761,10 @@ const CourierQuestionaire = () => {
                       onChange={screeningChangeHandler}
                       checked={screening === "yes"}
                     />
-                    <label className="pr-4 font-medium text-black">Yes</label>{" "}
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       screening === "no" && checked
                     }`}
                   >
@@ -768,10 +777,10 @@ const CourierQuestionaire = () => {
                       onChange={screeningChangeHandler}
                       checked={screening === "no"}
                     />
-                    <label className="pr-4 font-medium text-black">No</label>
-                  </div>
-                  <div
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                    <span className="pr-4 font-medium text-black">No</span>
+                  </label>
+                  <label
+                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                       screening === "maybe" && checked
                     }`}
                   >
@@ -784,8 +793,8 @@ const CourierQuestionaire = () => {
                       onChange={screeningChangeHandler}
                       checked={screening === "maybe"}
                     />
-                    <label className="pr-4 font-medium text-black">Maybe</label>
-                  </div>
+                    <span className="pr-4 font-medium text-black">Maybe</span>
+                  </label>
                 </div>
               </li>
             </ul>
@@ -805,9 +814,29 @@ const CourierQuestionaire = () => {
 
         <button
           // disabled={!formIsValid}
-          className="mt-8 rounded-3xl bg-green py-2 px-6 font-medium text-white"
+          className="mt-8 rounded-3xl bg-green px-6 py-2 font-medium text-white"
         >
-          Submit
+          {loading === true ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24px"
+              height="24px"
+              viewBox="0 0 50 50"
+              className="animate-spin"
+            >
+              <circle
+                cx="25"
+                cy="25"
+                r="20"
+                fill="none"
+                strokeWidth="4"
+                stroke="#000000"
+                opacity="0.2"
+              />
+            </svg>
+          ) : (
+            "Submit"
+          )}
         </button>
       </form>
     </>

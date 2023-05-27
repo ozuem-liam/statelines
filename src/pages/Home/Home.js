@@ -9,7 +9,7 @@ const Home = () => {
       <Header />
       <section>
         <video className="h-50 m-auto w-9/12 py-8" height="400px" controls>
-          <source type="video/mp4" />
+        <source src="/video/statelines.mp4" type="video/mp4" />
         </video>
 
         <section className="flex bg-green px-10 pt-6 pb-24 lg:px-60 lg:pt-32 ">
