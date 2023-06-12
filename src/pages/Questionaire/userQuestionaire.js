@@ -2,23 +2,42 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import { toast } from "react-toastify";
+import UserQuestions from "../../components/UserQuestions";
+import CourierQuestions from "../../components/CourierQuestions";
+import ModalComponent from "../../components/ModalComponent";
 
-const CourierQuestionaire = () => {
+const UserQuestionaire = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [enteredEmail, setEnteredEmail] = useState("");
+  const [location, setEnteredLocation] = useState("");
   const [comment, setComment] = useState("");
   const [gender, setGender] = useState("");
+  const [show, setShow] = useState(false);
   const [age, setAge] = useState("");
   const [income, setIncome] = useState("");
   const [scale, setScale] = useState("");
+  const [qualification, setQualification] = useState("");
   const [received, setReceived] = useState("");
   const [sealed, setSealed] = useState("");
   const [liability, setLiability] = useState("");
   const [travelPoint, setTravelPoint] = useState("");
   const [price, setPrice] = useState("");
   const [screening, setScreening] = useState("");
-  const [damage, setDamage] = useState("");
+  const [listLocation, setlistLocation] = useState("");
+  const [weight, setWeight] = useState("");
+  const [plans, setPlans] = useState("");
+  const [pickupAndDropoff, setPickupAndDropoff] = useState("");
+  const [enteredAddress, setEnteredAddress] = useState("");
+  const [enteredCompensation, setEnteredCompensation] = useState("");
+  const [packageSize, setPackageSize] = useState("");
+  const [need, setNeed] = useState("");
+  const [items, setItems] = useState("");
+  const [urgency, setUrgency] = useState("");
+  const [newCourier, setNewCourier] = useState("");
+  const [enteredConcerns, setEnteredConcerns] = useState("");
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const checked = "bg-green text-white";
 
@@ -30,90 +49,153 @@ const CourierQuestionaire = () => {
     setComment(event.target.value);
   };
 
-  const damageChangeHandler = (event) => {
-    setDamage(event.target.value);
+  const listLocationHandler = (event) => {
+    setlistLocation(event.target.value);
   };
 
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
   };
 
+  const locationChangeHandler = (event) => {
+    setEnteredLocation(event.target.value);
+  };
+
   const genderChangeHandler = (event) => {
     setGender(event.target.value);
   };
 
-  const incomeChangeHandler = (event) => {
-    setIncome(event.target.value);
+  const weightChangeHandler = (event) => {
+    setWeight(event.target.value);
   };
 
-  const liabilityChangeHandler = (event) => {
-    setLiability(event.target.value);
+  const plansChangeHandler = (event) => {
+    setPlans(event.target.value);
   };
 
-  const priceChangeHandler = (event) => {
-    setPrice(event.target.value);
+  const pickupAndDropoffChangeHandler = (event) => {
+    setPickupAndDropoff(event.target.value);
   };
 
-  const receiveChangeHandler = (event) => {
-    setReceived(event.target.value);
+  const addressChangeHandler = (event) => {
+    setEnteredAddress(event.target.value);
   };
 
-  const screeningChangeHandler = (event) => {
-    setScreening(event.target.value);
+  const compensationChangeHandler = (event) => {
+    setEnteredCompensation(event.target.value);
   };
 
-  const sealedChangeHandler = (event) => {
-    setSealed(event.target.value);
+  const packageSizeChangeHandler = (event) => {
+    setPackageSize(event.target.value);
   };
 
   const scaleChangeHandler = (event) => {
     setScale(event.target.value);
   };
 
-  const travelPointChangeHandler = (event) => {
-    setTravelPoint(event.target.value);
+  const qualificationChangeHandler = (event) => {
+    setQualification(event.target.value);
+  };
+
+  const needChangeHandler = (event) => {
+    setNeed(event.target.value);
+  };
+  const itemsChangeHandler = (event) => {
+    setItems(event.target.value);
+  };
+  const urgencyChangeHandler = (event) => {
+    setUrgency(event.target.value);
+  };
+  const newCourierChangeHandler = (event) => {
+    setNewCourier(event.target.value);
+  };
+  const concernsChangeHandler = (event) => {
+    setEnteredConcerns(event.target.value);
   };
 
   const submitHandler = async (event) => {
     setLoading(true);
     event.preventDefault();
     try {
-      const response = await fetch(
-        "https://smithswork-sl-v1-api.onrender.com/api/community/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: enteredEmail,
-            gender: gender,
-            income: income,
-            age: age,
-            travel_frequency: scale,
-            q1: received,
-            q2: sealed,
-            q3: liability,
-            q4: travelPoint,
-            q5: price,
-            notes: comment,
-          }),
+      if (qualification === "yes") {
+        const response = await fetch(
+          "https://smithswork-sl-v1-api.onrender.com/api/sender/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: enteredEmail,
+              gender: gender,
+              age: age,
+              location: location,
+              scale: scale,
+              qualification: qualification,
+              listLocation: listLocation,
+              weight: weight,
+              plans: plans,
+              pickupAndDropoff: pickupAndDropoff,
+              enteredAddress: enteredAddress,
+              enteredCompensation: enteredCompensation,
+              notes: comment,
+            }),
+          }
+        );
+        if (!response.ok) {
+          setLoading(false);
+          toast.error("Something went wrong!");
+          throw new Error("couldn't fetch data");
         }
-      );
-      if (!response.ok) {
         setLoading(false);
-        toast.error("Something went wwrong!");
-        throw new Error("couldn't fetch data");
+        toast.success("Your answers have been successfully recorded 😄!");
+        navigate("/Thankyou");
+      } else {
+        const response = await fetch(
+          "https://smithswork-sl-v1-api.onrender.com/api/community/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: enteredEmail,
+              gender: gender,
+              age: age,
+              location: location,
+              scale: scale,
+              qualification: qualification,
+              packageSize: packageSize,
+              need: need,
+              items: items,
+              urgency: urgency,
+              newCourier: newCourier,
+              enteredConcerns: enteredConcerns,
+              notes: comment,
+            }),
+          }
+        );
+        if (!response.ok) {
+          setLoading(false);
+          toast.error("Something went wrong!");
+          throw new Error("couldn't fetch data");
+        }
+        setLoading(false);
+        toast.success("Your answers have been successfully recorded 😄!");
+        navigate("/Thankyou");
       }
-      setLoading(false);
-      toast.success("Your answers have been successfully recorded 😄!");
-      navigate("/Thankyou");
     } catch (error) {}
   };
 
   return (
     <>
       <Header />
+      <ModalComponent
+        show={show}
+        handleClose={handleClose}
+        subject="Community Courier qualification"
+        content="it"
+      />
       <form onSubmit={submitHandler} className="px-12 py-6   pb-12 lg:px-60">
         <div>
           <p className="mb-2 font-medium text-green">Email (optional)</p>
@@ -134,8 +216,8 @@ const CourierQuestionaire = () => {
 
         <ol className="list-decimal  py-6">
           {/* question 1 */}
-          <li className="mb-6 text-green">
-            <p className="mb-2 text-green">What’s your gender?</p>{" "}
+          <li className="mb-6">
+            <p className="mb-2 text-green">Gender</p>{" "}
             <div className="flex gap-4">
               <label
                 className={`space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
@@ -175,7 +257,7 @@ const CourierQuestionaire = () => {
           </li>
 
           {/* question 2 */}
-          <li className=" mb-6 text-green">
+          <li className=" mb-6">
             <p className="mb-2 text-green">Age Range?</p>{" "}
             <div className="flex flex-wrap gap-4">
               <label
@@ -213,7 +295,7 @@ const CourierQuestionaire = () => {
                 <span className="pr-4 font-medium text-black">25-44</span>
               </label>
               <label
-                className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
+                className={` space-x-1 rounded-2xl border-2 border-solid border-black px-1 px-2 ${
                   age === "45 Above" && checked
                 }`}
               >
@@ -233,78 +315,33 @@ const CourierQuestionaire = () => {
           </li>
 
           {/* question 3 */}
-          <li className=" mb-6 text-green">
-            <p className="mb-2 text-green">Age Range?</p>{" "}
-            <div className="flex flex-wrap gap-4">
-              <label
-                className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
-                  income === "below 1 million" && checked
-                }`}
-              >
-                <input
-                  className={`opacity-0`}
-                  required
-                  id="low"
-                  type="radio"
-                  name="income"
-                  value="below 1 million"
-                  onChange={incomeChangeHandler}
-                  checked={income === "below 1 million"}
-                />
-                <span className="pr-4 font-medium text-black">
-                  below 1 million
-                </span>{" "}
-              </label>
-              <label
-                className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
-                  income === "Above 1.5 Million" && checked
-                }`}
-              >
-                <input
-                  className={`opacity-0`}
-                  required
-                  id="average"
-                  type="radio"
-                  name="income"
-                  value="Above 1.5 Million"
-                  onChange={incomeChangeHandler}
-                  checked={income === "Above 1.5 Million"}
-                />
-                <span className="pr-4 font-medium text-black">
-                  above 1.5 million
-                </span>
-              </label>
-              <label
-                className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black px-2 ${
-                  income === "Above 2.5 Million" && checked
-                }`}
-              >
-                <input
-                  className={`opacity-0`}
-                  required
-                  id="high"
-                  type="radio"
-                  name="income"
-                  value="Above 2.5 Million"
-                  onChange={incomeChangeHandler}
-                  checked={income === "Above 2.5 Million"}
-                />
-                <span className="pr-4 font-medium text-black">
-                  above 2.5 million
-                </span>
-              </label>
+          <li className=" mb-6">
+            <div>
+              <p className="mb-2 font-medium text-green">- Primary location</p>
+              <p className="mb-4 font-medium">In what city do you reside?</p>
+              <input
+                type="location"
+                label="Primary location"
+                placeholder="enter location name"
+                value={location}
+                required
+                onChange={locationChangeHandler}
+                className="color-white w-full rounded-lg bg-black px-4 py-2 text-center text-white outline-none lg:w-2/4"
+              />
             </div>
           </li>
 
           {/* question 4 */}
-          <li className=" mb-6 text-green">
-            <p className="mb-2 text-green">
-              How often do you travel interstate on a scale of 1-5?
-            </p>{" "}
+          <li className=" mb-6">
+            <p className="mb-2 font-medium text-green">- Travel frequency</p>
+            <p className="mb-4 font-medium">
+              Within a month, how often do you travel from your primary location
+              to other states or locations?
+            </p>
             <div className="flex gap-4">
               <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
-                  scale === "one" && checked
+                  scale === "rarely" && checked
                 }`}
               >
                 <input
@@ -312,15 +349,15 @@ const CourierQuestionaire = () => {
                   required
                   type="radio"
                   name="scale"
-                  value="one"
+                  value="rarely"
                   onChange={scaleChangeHandler}
-                  checked={scale === "one"}
+                  checked={scale === "rarely"}
                 />
-                <span className="pr-4 font-medium text-black">1</span>{" "}
+                <span className="pr-4 font-medium text-black">Rarely</span>{" "}
               </label>
               <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
-                  scale === "two" && checked
+                  scale === "sometimes" && checked
                 }`}
               >
                 <input
@@ -328,15 +365,17 @@ const CourierQuestionaire = () => {
                   required
                   type="radio"
                   name="scale"
-                  value="two"
+                  value="sometimes"
                   onChange={scaleChangeHandler}
-                  checked={scale === "two"}
+                  checked={scale === "sometimes"}
                 />
-                <span className="pr-4 font-medium text-black">2</span>
+                <span className="pr-4 font-medium text-black">
+                  Sometimes (at least 1 trip)
+                </span>
               </label>
               <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
-                  scale === "three" && checked
+                  scale === "often" && checked
                 }`}
               >
                 <input
@@ -344,13 +383,14 @@ const CourierQuestionaire = () => {
                   required
                   type="radio"
                   name="scale"
-                  value="three"
+                  value="often"
                   onChange={scaleChangeHandler}
-                  checked={scale === "three"}
+                  checked={scale === "often"}
                 />
-                <span className="pr-4 font-medium text-black">3</span>
+                <span className="pr-4 font-medium text-black">
+                  Often (2 trips at least)
+                </span>
               </label>
-
               <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
                   scale === "four" && checked
@@ -366,438 +406,112 @@ const CourierQuestionaire = () => {
                   onChange={scaleChangeHandler}
                   checked={scale === "four"}
                 />
-                <span className="pr-4 font-medium text-black">4</span>
+                <span className="pr-4 font-medium text-black">
+                  Frequently (more than 3 trips)
+                </span>
               </label>
+            </div>
+          </li>
 
+          {/* question 5 */}
+          <li className=" mb-6">
+            <p className="mb-2 font-medium text-green">
+              - Community Courier qualification
+            </p>
+            <p className="mb-4 font-medium">
+              Are you interested in making supplementary earnings based on your
+              frequent travels?
+            </p>
+            <div className="flex gap-4">
               <label
                 className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
-                  scale === "five" && checked
+                  qualification === "yes" && checked
                 }`}
               >
                 <input
                   className={`opacity-0`}
                   required
-                  id="OA"
                   type="radio"
-                  name="scale"
-                  value="five"
-                  onChange={scaleChangeHandler}
-                  checked={scale === "five"}
+                  name="qualification"
+                  value="yes"
+                  onChange={qualificationChangeHandler}
+                  checked={qualification === "yes"}
                 />
-                <span className="pr-4 font-medium text-black">5</span>
+                <span className="pr-4 font-medium text-black">
+                  “Yes” (progress to Community Corier questions)
+                </span>{" "}
+              </label>
+              <label
+                className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
+                  qualification === "no" && checked
+                }`}
+              >
+                <input
+                  className={`opacity-0`}
+                  required
+                  type="radio"
+                  name="qualification"
+                  value="no"
+                  onChange={qualificationChangeHandler}
+                  checked={qualification === "no"}
+                />
+                <span className="pr-4 font-medium text-black">
+                  {" "}
+                  “No” (revert to Service User questions)
+                </span>
+              </label>
+              <label
+                className={`flex items-baseline space-x-1 rounded-2xl border-2 border-solid border-black  ${
+                  qualification === "undecided”" && checked
+                }`}
+              >
+                <input
+                  className={`opacity-0`}
+                  required
+                  type="radio"
+                  name="qualification"
+                  value="undecided”"
+                  onChange={qualificationChangeHandler}
+                  checked={qualification === "undecided”"}
+                />
+                <span className="pr-4 font-medium text-black">Undecided</span>
               </label>
             </div>
           </li>
 
-          {/* questino 5 */}
-          <li className="mb-6 text-green">
-            <p className="mb-2 ">
-              Would you send your package through a courier service under the
-              following conditions?
-            </p>
-            <ul className="list-disc text-black">
-              <li className="mb-4">
-                <p className="mb-2 font-medium text-black">
-                  Package is received at either a collection center or picked up
-                  at you house.
-                </p>
-                <div className="flex gap-4">
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      received === "yes" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="received"
-                      value="yes"
-                      onChange={receiveChangeHandler}
-                      checked={received === "yes"}
-                    />
-                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      received === "no" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="received"
-                      value="no"
-                      onChange={receiveChangeHandler}
-                      checked={received === "no"}
-                    />
-                    <span className="pr-4 font-medium text-black">No</span>
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      received === "maybe" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="received"
-                      value="maybe"
-                      onChange={receiveChangeHandler}
-                      checked={received === "maybe"}
-                    />
-                    <span className="pr-4 font-medium text-black">Maybe</span>
-                  </label>
-                </div>
-              </li>
-
-              <li className="mb-4">
-                <p className="mb-2 font-medium text-black">
-                  Package must be opened for security screening and sealed
-                  afterwards by the service.
-                </p>
-                <div className="flex gap-4">
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      sealed === "yes" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="sealed"
-                      value="yes"
-                      onChange={sealedChangeHandler}
-                      checked={sealed === "yes"}
-                    />
-                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      sealed === "no" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="sealed"
-                      value="no"
-                      onChange={sealedChangeHandler}
-                      checked={sealed === "no"}
-                    />
-                    <span className="pr-4 font-medium text-black">No</span>
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      sealed === "maybe" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="sealed"
-                      value="maybe"
-                      onChange={sealedChangeHandler}
-                      checked={sealed === "maybe"}
-                    />
-                    <span className="pr-4 font-medium text-black">Maybe</span>
-                  </label>
-                </div>
-              </li>
-
-              <li className="mb-4">
-                <p className="mb-2 font-medium text-black">
-                  Package is subject to standard insurance and included in
-                  pricing.
-                </p>
-                <div className="flex gap-4">
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      liability === "yes" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="liability"
-                      value="yes"
-                      onChange={liabilityChangeHandler}
-                      checked={liability === "yes"}
-                    />
-                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      liability === "no" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="liability"
-                      value="no"
-                      onChange={liabilityChangeHandler}
-                      checked={liability === "no"}
-                    />
-                    <span className="pr-4 font-medium text-black">No</span>
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      liability === "maybe" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="liability"
-                      value="maybe"
-                      onChange={liabilityChangeHandler}
-                      checked={liability === "maybe"}
-                    />
-                    <span className="pr-4 font-medium text-black">Maybe</span>
-                  </label>
-                </div>
-              </li>
-
-              <li className="mb-4">
-                <p className="mb-2 font-medium text-black">
-                  Package also has the option of special insurance to cover
-                  packages of significant worth.
-                </p>
-                <div className="flex gap-4">
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      travelPoint === "yes" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="travelPoint"
-                      value="yes"
-                      onChange={travelPointChangeHandler}
-                      checked={travelPoint === "yes"}
-                    />
-                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      travelPoint === "no" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="travelPoint"
-                      value="no"
-                      onChange={travelPointChangeHandler}
-                      checked={travelPoint === "no"}
-                    />
-                    <span className="pr-4 font-medium text-black">No</span>
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      travelPoint === "maybe" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="travelPoint"
-                      value="maybe"
-                      onChange={travelPointChangeHandler}
-                      checked={travelPoint === "maybe"}
-                    />
-                    <span className="pr-4 font-medium text-black">Maybe</span>
-                  </label>
-                </div>
-              </li>
-
-              <li className="mb-4">
-                <p className="mb-2 font-medium text-black">
-                  Package is sent through Community Couriers who are registered
-                  individuals who travel regularly by road, rail and air across
-                  states in Nigeria. Community Couriers are subjected to
-                  screening that includes identity checks, guarantors, and
-                  location per time.
-                </p>
-                <div className="flex gap-4">
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      price === "yes" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="price"
-                      value="yes"
-                      onChange={priceChangeHandler}
-                      checked={price === "yes"}
-                    />
-                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      price === "no" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="price"
-                      value="no"
-                      onChange={priceChangeHandler}
-                      checked={price === "no"}
-                    />
-                    <span className="pr-4 font-medium text-black">No</span>
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      price === "maybe" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="price"
-                      value="maybe"
-                      onChange={priceChangeHandler}
-                      checked={price === "maybe"}
-                    />
-                    <span className="pr-4 font-medium text-black">Maybe</span>
-                  </label>
-                </div>
-              </li>
-
-              <li className="mb-4">
-                <p className="mb-2 font-medium text-black">
-                  Package fees are slightly above what is offered by the
-                  traditional motor parks for inter-state delivery.
-                </p>
-                <div className="flex gap-4">
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      damage === "yes" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="damage"
-                      value="yes"
-                      onChange={damageChangeHandler}
-                      checked={damage === "yes"}
-                    />
-                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      damage === "no" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="damage"
-                      value="no"
-                      onChange={damageChangeHandler}
-                      checked={damage === "no"}
-                    />
-                    <span className="pr-4 font-medium text-black">No</span>
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      damage === "maybe" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="damage"
-                      value="maybe"
-                      onChange={damageChangeHandler}
-                      checked={damage === "maybe"}
-                    />
-                    <span className="pr-4 font-medium text-black">Maybe</span>
-                  </label>
-                </div>
-              </li>
-
-              <li className="mb-4">
-                <p className="mb-2 font-medium text-black">
-                  Packages can be tracked via your mobile applications.
-                </p>
-                <div className="flex gap-4">
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      screening === "yes" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="screening"
-                      value="yes"
-                      onChange={screeningChangeHandler}
-                      checked={screening === "yes"}
-                    />
-                    <span className="pr-4 font-medium text-black">Yes</span>{" "}
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      screening === "no" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="screening"
-                      value="no"
-                      onChange={screeningChangeHandler}
-                      checked={screening === "no"}
-                    />
-                    <span className="pr-4 font-medium text-black">No</span>
-                  </label>
-                  <label
-                    className={` space-x-1 rounded-2xl border-2 border-solid border-black px-2 px-1 ${
-                      screening === "maybe" && checked
-                    }`}
-                  >
-                    <input
-                      className={`opacity-0`}
-                      required
-                      type="radio"
-                      name="screening"
-                      value="maybe"
-                      onChange={screeningChangeHandler}
-                      checked={screening === "maybe"}
-                    />
-                    <span className="pr-4 font-medium text-black">Maybe</span>
-                  </label>
-                </div>
-              </li>
-            </ul>
-          </li>
+          {qualification === "yes" ? (
+            <CourierQuestions
+              listLocation={listLocation}
+              listLocationHandler={listLocationHandler}
+              checked={checked}
+              weight={weight}
+              weightChangeHandler={weightChangeHandler}
+              plans={plans}
+              plansChangeHandler={plansChangeHandler}
+              pickupAndDropoff={pickupAndDropoff}
+              pickupAndDropoffChangeHandler={pickupAndDropoffChangeHandler}
+              enteredAddress={enteredAddress}
+              addressChangeHandler={addressChangeHandler}
+              enteredCompensation={enteredCompensation}
+              compensationChangeHandler={compensationChangeHandler}
+            />
+          ) : (
+            <UserQuestions
+              packageSize={packageSize}
+              packageSizeChangeHandler={packageSizeChangeHandler}
+              checked={checked}
+              need={need}
+              needChangeHandler={needChangeHandler}
+              items={items}
+              itemsChangeHandler={itemsChangeHandler}
+              urgency={urgency}
+              urgencyChangeHandler={urgencyChangeHandler}
+              newCourier={newCourier}
+              newCourierChangeHandler={newCourierChangeHandler}
+              enteredConcerns={enteredConcerns}
+              concernsChangeHandler={concernsChangeHandler}
+            />
+          )}
         </ol>
 
         <div>
@@ -813,9 +527,9 @@ const CourierQuestionaire = () => {
 
         <button
           // disabled={!formIsValid}
-          className="mt-8 rounded-3xl bg-green py-2 px-6 font-medium text-white"
+          className="mt-8 rounded-3xl bg-green px-6 py-2 font-medium text-white"
         >
-                    {loading === true ? (
+          {loading === true ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24px"
@@ -842,4 +556,4 @@ const CourierQuestionaire = () => {
   );
 };
 
-export default CourierQuestionaire;
+export default UserQuestionaire;

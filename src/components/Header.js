@@ -15,7 +15,7 @@ const Header = () => {
         </div>
         <div>
           {currentPath === "/" ? (
-            <Link to="/help">
+            <Link to="/userQuestionaire">
               <h6 className="text-white font-sans font-semibold cursor-pointer">Questionnaire</h6>
             </Link>
           ) : currentPath === "/userQuestionaire" ? (

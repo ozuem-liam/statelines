@@ -22,7 +22,7 @@ const Home = () => {
               Answer this
               <br /> <span className="text-black">questionnaire</span>
             </h2>
-            <Link to="/help">
+            <Link to="/userQuestionaire">
               <button className="mt-6 rounded-3xl bg-white py-2 px-5 font-medium lg:text-2xl">
                 Start here
               </button>
